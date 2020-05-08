@@ -94,3 +94,8 @@ class PostResolver(private val authorRepository: AuthorRepository) : GraphQLReso
     fun author(post: Post) = authorRepository.findById(post.authorId)
 
 }
+
+@Component
+class AuthorResolver(val postService: PostService) : GraphQLResolver<Author> {
+    fun posts(author: Author) = postService.getPostByAuthorId(author.id)
+}

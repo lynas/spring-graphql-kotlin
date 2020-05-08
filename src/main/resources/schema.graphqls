@@ -9,6 +9,7 @@ type Author {
     id: ID!
     name: String
     thumbnail: String
+    posts : [Post]
 }
 
 # The Root Query for the application
