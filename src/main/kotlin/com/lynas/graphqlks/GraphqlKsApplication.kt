@@ -1,6 +1,7 @@
 package com.lynas.graphqlks
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver
+import com.coxautodev.graphql.tools.GraphQLResolver
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -85,5 +86,11 @@ class Query(val postService: PostService, val authorService: AuthorService) : Gr
     fun authors() = authorService.getAuthors()
 
     fun author(id: String) = authorService.getAuthor(id)
+
+}
+
+@Component
+class PostResolver(private val authorRepository: AuthorRepository) : GraphQLResolver<Post> {
+    fun author(post: Post) = authorRepository.findById(post.authorId)
 
 }
