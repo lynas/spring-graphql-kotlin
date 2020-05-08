@@ -1,0 +1,19 @@
+type Post {
+    id: ID!
+    text: String
+    category: String
+    authorId: String
+}
+
+type Author {
+    id: ID!
+    name: String
+    thumbnail: String
+}
+
+# The Root Query for the application
+type Query {
+    recentPosts(count: Int, offset: Int): [Post]
+    authors : [Author]
+    author(authorId:String) : Author
+}
