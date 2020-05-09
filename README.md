@@ -54,3 +54,21 @@ query {
 }
 
 ```
+
+- Input for mutation
+
+```
+mutation {
+    author(
+        operation:"insert",
+        authorInput: {
+            name: "Max",
+            thumbnail: "TM1"
+        }
+    ){
+        id
+        name
+        thumbnail
+    }
+}
+```
