@@ -99,14 +99,14 @@ class Query(val postService: PostService, val authorService: AuthorService) : Gr
 class Mutation(val authorService: AuthorService) : GraphQLMutationResolver {
 
     fun author(operation:String, authorInput: AuthorInput) : Author? {
-        return when (operation) {
+        when (operation) {
             "insert" ->
                 return authorService.saveAuthor(
                         Author(id = UUID.randomUUID().toString(),
                                 name = authorInput.name,
                                 thumbnail = authorInput.thumbnail ?: ""))
 
-            else -> null
+            else -> return null
         }
     }
 
