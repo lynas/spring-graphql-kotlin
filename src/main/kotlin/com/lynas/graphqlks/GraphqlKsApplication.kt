@@ -20,13 +20,13 @@ class GraphqlKsApplication {
 
     @Bean
     fun init(postService: PostService, authorService: AuthorService) = CommandLineRunner {
-        val author1id = UUID.randomUUID().toString()
-        val author2id = UUID.randomUUID().toString()
-        val post1 = Post(UUID.randomUUID().toString(), "t1", "txt1", author1id)
-        val post2 = Post(UUID.randomUUID().toString(), "t2", "txt2", author1id)
-        val post3 = Post(UUID.randomUUID().toString(), "t3", "txt3", author2id)
-        val post4 = Post(UUID.randomUUID().toString(), "t4", "txt4", author2id)
-        val post5 = Post(UUID.randomUUID().toString(), "t5", "txt5", author2id)
+        val author1id = ID()
+        val author2id = ID()
+        val post1 = Post(ID(), "t1", "txt1", author1id)
+        val post2 = Post(ID(), "t2", "txt2", author1id)
+        val post3 = Post(ID(), "t3", "txt3", author2id)
+        val post4 = Post(ID(), "t4", "txt4", author2id)
+        val post5 = Post(ID(), "t5", "txt5", author2id)
         postService.saveAllPost(listOf(post1, post2, post3, post4, post5))
                 .forEach { println(it) }
 
@@ -43,6 +43,8 @@ class GraphqlKsApplication {
 fun main(args: Array<String>) {
     runApplication<GraphqlKsApplication>(*args)
 }
+
+fun ID() = UUID.randomUUID().toString()
 
 @Entity
 data class Author(@Id val id: String, val name: String, val thumbnail: String)
@@ -102,7 +104,7 @@ class Mutation(val authorService: AuthorService) : GraphQLMutationResolver {
         when (operation) {
             "insert" ->
                 return authorService.saveAuthor(
-                        Author(id = UUID.randomUUID().toString(),
+                        Author(id = ID(),
                                 name = authorInput.name,
                                 thumbnail = authorInput.thumbnail ?: ""))
 
