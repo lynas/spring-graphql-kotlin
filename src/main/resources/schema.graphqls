@@ -12,9 +12,19 @@ type Author {
     posts : [Post]
 }
 
+
+input AuthorInput {
+    name: String!
+    thumbnail: String
+}
+
 # The Root Query for the application
 type Query {
     recentPosts(count: Int, offset: Int): [Post]
     authors : [Author]
     author(authorId:String) : Author
+}
+
+type Mutation {
+    author(operation:String, authorInput: AuthorInput) : Author
 }

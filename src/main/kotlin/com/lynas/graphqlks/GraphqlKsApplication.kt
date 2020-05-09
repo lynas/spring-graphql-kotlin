@@ -1,5 +1,6 @@
 package com.lynas.graphqlks
 
+import com.coxautodev.graphql.tools.GraphQLMutationResolver
 import com.coxautodev.graphql.tools.GraphQLQueryResolver
 import com.coxautodev.graphql.tools.GraphQLResolver
 import org.springframework.boot.CommandLineRunner
@@ -46,6 +47,8 @@ fun main(args: Array<String>) {
 @Entity
 data class Author(@Id val id: String, val name: String, val thumbnail: String)
 
+data class AuthorInput(val name: String, val thumbnail: String?)
+
 @Entity
 data class Post(@Id val id: String, val text:String, val category: String, val authorId: String)
 
@@ -61,6 +64,8 @@ class AuthorService(private val authorRepository: AuthorRepository) {
     fun getAuthors() = authorRepository.findAll()
 
     fun saveAllAuthors(entities: Iterable<Author>) = authorRepository.saveAll(entities)
+
+    fun saveAuthor(author: Author) = authorRepository.save(author)
 
     fun getAuthor(id: String) = authorRepository.findById(id).orElse(null)
 
@@ -86,6 +91,24 @@ class Query(val postService: PostService, val authorService: AuthorService) : Gr
     fun authors() = authorService.getAuthors()
 
     fun author(id: String) = authorService.getAuthor(id)
+
+}
+
+
+@Component
+class Mutation(val authorService: AuthorService) : GraphQLMutationResolver {
+
+    fun author(operation:String, authorInput: AuthorInput) : Author? {
+        return when (operation) {
+            "insert" ->
+                return authorService.saveAuthor(
+                        Author(id = UUID.randomUUID().toString(),
+                                name = authorInput.name,
+                                thumbnail = authorInput.thumbnail ?: ""))
+
+            else -> null
+        }
+    }
 
 }
 
