@@ -1,14 +1,12 @@
 type Post {
     id: ID!
     text: String
-    category: String
     author: Author
 }
 
 type Author {
     id: ID!
     name: String
-    thumbnail: String
     posts : [Post]
 }
 
@@ -20,7 +18,7 @@ input AuthorInput {
 
 # The Root Query for the application
 type Query {
-    recentPosts(count: Int, offset: Int): [Post]
+    posts: [Post]
     authors : [Author]
     author(authorId:String) : Author
 }
