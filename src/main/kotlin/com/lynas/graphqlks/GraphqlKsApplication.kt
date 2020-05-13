@@ -68,6 +68,16 @@ class Query(val postRepository: PostRepository, val authorRepository: AuthorRepo
 
 }
 
+@Component
+class PostResolver(private val authorRepository: AuthorRepository) : GraphQLResolver<Post> {
+    fun author(post: Post) = authorRepository.findById(post.authorId)
+
+}
+
+@Component
+class AuthorResolver(val postRepository: PostRepository) : GraphQLResolver<Author> {
+    fun posts(author: Author) = postRepository.getByAuthorId(author.id)
+}
 
 @Component
 class Mutation(val authorRepository: AuthorRepository) : GraphQLMutationResolver {
@@ -79,15 +89,4 @@ class Mutation(val authorRepository: AuthorRepository) : GraphQLMutationResolver
         }
     }
 
-}
-
-@Component
-class PostResolver(private val authorRepository: AuthorRepository) : GraphQLResolver<Post> {
-    fun author(post: Post) = authorRepository.findById(post.authorId)
-
-}
-
-@Component
-class AuthorResolver(val postRepository: PostRepository) : GraphQLResolver<Author> {
-    fun posts(author: Author) = postRepository.getByAuthorId(author.id)
 }
